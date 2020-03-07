@@ -1,1 +1,163 @@
-<p>Add Project Works !!</p>>
+<div class="row my-3 p-3 bg-white rounded box-shadow">
+  <div class="col-xs-12 col-sm-2 col-md-2"></div>
+  <div class="col-xs-12 col-sm-8 col-md-8">
+    <form method="post" name="form" (ngSubmit)="f.form.valid && addproject()" #f="ngForm" novalidate>
+      <div class="form-group row">
+        <label for="project" class="col-sm-1 col-form-label">{{ 'Project' | translate }}</label>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" id="project" maxlength="50" required name="project" #project="ngModel"
+            [(ngModel)]="projectmodel.project" placeholder="{{ 'ProjectLabel' | translate }}"
+            [ngClass]="{ 'is-invalid': f.submitted && project.invalid }" />
+          <div *ngIf="f.submitted && project.invalid" class="invalid-feedback">
+            <div *ngIf="project.errors.required">{{ 'ErrorProjectRequired' | translate }}</div>
+          </div>
+        </div>
+
+      </div>
+      <div class="form-group row">
+        <div class="col-sm-1">
+
+        </div>
+
+        <div class="col-sm-4 pl-12 pr-0">
+          <div class="pt-2">
+            <input #setDateCheckBox id="setDateCheckBox" 
+              [checked]="dateEnable"  (change)="enableProjectDate(setDateCheckBox.checked)" type="checkbox" [disabled]="isEdit" />&nbsp;
+            <label for="setDate" class="col-form-label" >{{ 'SetDate' | translate }}</label>
+          </div>
+        </div>
+        <div class="col-sm-4 pl-12">
+          <div class="pt-2">
+            <input type="date" class="form-control" id="start_Date" name="start_Date" #start_Date="ngModel"
+              [(ngModel)]="projectmodel.start_Date"
+              [ngClass]="{ 'is-invalid': f.submitted && start_Date.invalid }" [readonly]="!dateEnable"  (change)="compareTwoDates()" required />
+          </div>
+        </div>
+        <div class="col-sm-4"></div>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="col-sm-4">
+          <div class="pt-2">
+            <input type="date" class="form-control" id="end_Date" name="end_Date" #end_Date="ngModel"
+              min="{{projectmodel.start_Date}}" [(ngModel)]="projectmodel.end_Date" [readonly]="!dateEnable"
+              [ngClass]="{ 'is-invalid': f.submitted && end_Date.invalid }" required (change)="compareTwoDates()" />
+            <div *ngIf="f.submitted && end_Date.invalid" class="invalid-feedback">
+              <div *ngIf="end_Date.errors.required">{{ 'ErrorDateRequired' | translate }}</div>
+            </div>
+          </div>
+          <div *ngIf="error.isError" class="alert alert-danger">
+            {{ error.errorMessage }}
+         </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="pt-3">
+          <label for="priority" class="col-form-label">{{ 'Priority' | translate }}</label>
+        </div>
+        <div class="col-sm-8">
+          <div class="pt-2">
+            <input type="range" class="form-control" default="0" min="0" max="30" name="priority"
+              [(ngModel)]="projectmodel.priority" class="slider" id="priority">
+          </div>
+        </div>
+        <div class="col-sm-1">
+          <div class="pt-3">
+           <b>{{projectmodel.priority}}</b> 
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="pt-2">
+          <label for="manager" class="col-form-label">{{ 'Manager' | translate }}</label>
+        </div>
+        <div class="col-sm-6">
+          <div class="pt-2">
+            <input type="text" class="form-control" id="manager" maxlength="50" required name="manager" readonly
+              #manager="ngModel" [(ngModel)]="projectmodel.users.firstName"
+              [ngClass]="{ 'is-invalid': f.submitted && manager.invalid }" />
+            <div *ngIf="f.submitted && manager.invalid" class="invalid-feedback">
+              <div *ngIf="manager.errors.required">{{ 'ErrorManagerRequired' | translate }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="pt-2">
+            <button type="button" id="submitModalOpener1" class="oval" data-toggle="modal" data-target="#submitModal1">
+              {{'Search' | translate}}
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-sm-4 col-form-label"></div>
+        <div class="col-sm-12 input-group"></div>
+        <div class="col-sm-12 row">
+          <div class="col-sm-12 input-group">
+            <div class=" row" *ngIf="!isEdit">
+              &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+              <button type="submit" class="btn btn-success mx-3">{{ 'Add Project' | translate }}</button>
+              <button type="button" class="btn btn-info mx-5" (click)=resetButton()> {{ 'Reset' | translate }} </button>
+            </div>
+            <div class=" row" *ngIf="isEdit">
+              &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp;
+              <button type="submit" class="btn btn-success mx-3" [disabled]="error.isError">{{ 'Update Project' | translate }}</button>
+              <button type="button" class="btn btn-danger mx-5" (click)=CancelProjectScreen()> {{ 'Cancel' | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<hr>
+
+
+<!-- The Modal -->
+<div class="modal fade" role="dialog" id="submitModal1" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title"><b>{{ 'Search Manager' | translate }}</b></h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body"><b>
+          <div class="col-sm-18">
+            {{ 'Search Manager' | translate }}:
+            <input type="text" name="searchUser" placeholder="{{'Search Manager TextBox' | translate}}" [(ngModel)]="searchUser"
+              autofocus>
+          </div>
+          <ul class="managers">
+            <li *ngFor="let user of allUserList | userSearchPipe : searchUser" [class.selected]="user === selectedUser"
+              (click)="onSelectManager(user)">
+              <span class="badge">{{user.employeeID}}</span> {{user.firstName}}
+            </li>
+          </ul>
+        </b></div>
+    </div>
+  </div>
+</div>
+
+<button type="button" id="submitModalOpener" class="btn btn-primary" [hidden]="true" data-toggle="modal"
+  data-target="#submitModal">
+</button>
+
+<!-- The Modal -->
+<div class="modal fade" role="dialog" id="submitModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title"><b>{{modalHeading}}</b></h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body"><b>
+          {{modalBody}}
+        </b></div>
+    </div>
+  </div>
+</div>

@@ -1,15 +1,17 @@
 import { NgModule, ModuleWithProviders } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SearchByUser } from './../SearchByUser';
-
+import { SearchByProject } from './../SearchByProject';
 
 @NgModule({
   declarations: [
-    SearchByUser
+    SearchByUser,
+    SearchByProject
 
   ],
   exports: [
-    SearchByUser
+    SearchByUser,
+    SearchByProject
   ],
   imports: [
     CommonModule

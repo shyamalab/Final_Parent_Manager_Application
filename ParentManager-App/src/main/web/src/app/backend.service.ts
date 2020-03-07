@@ -3,6 +3,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 import { User } from './Users';
+import { Project } from './Project';
 
 @Injectable({
   providedIn: 'root'
@@ -52,15 +53,43 @@ export class BackendService {
       )
   }
 
-  //User Service - DeleteUser
+ //Project Service - Add
 
-  deleteUser(id): Observable<any> {
-    return this._httpclient.delete<any>(this.url + "delete/user/" + id, this.httpOptions)
-      .pipe(
-        retry(1),
-        catchError(this.ErrorHanlding)
-      )
-  }
+ addprojectService(data): Observable<Project> {
+  return this._httpclient.post<Project>(this.url + "add/project", JSON.stringify(data), this.httpOptions)
+    .pipe(
+      retry(2),
+      catchError(this.ErrorHanlding)
+    )
+}
+
+//Project Service - GetAll
+getAllProjectlist(): Observable<any> {
+  return this._httpclient.get(this.url + "all/projects", this.httpOptions)
+    .pipe(
+      retry(2),
+      catchError(this.ErrorHanlding)
+    )
+}
+
+//Project Service - GetAll - Active
+getAllActiveProjectlist(): Observable<any> {
+  return this._httpclient.get(this.url + "all/projects/active", this.httpOptions)
+    .pipe(
+      retry(2),
+      catchError(this.ErrorHanlding)
+    )
+}
+
+//Project Service - Update
+
+updateProject(id, data): Observable<Project> {
+  return this._httpclient.put<Project>(this.url + "project/" + id, JSON.stringify(data), this.httpOptions)
+    .pipe(
+      retry(1),
+      catchError(this.ErrorHanlding)
+    )
+}
 
   ErrorHanlding(error) {
     let errorMessage = '';

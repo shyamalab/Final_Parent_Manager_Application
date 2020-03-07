@@ -5,7 +5,7 @@ import { NgbModal, NgbModule, NgbTypeaheadModule, NgbDatepicker} from '@ng-boots
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
-
+import { SharepipemoduleModule } from '../pipes/sharepipemodule/sharepipemodule.module';
 import { TaskprojectRoutingModule } from './taskproject-routing.module';
 import { TaskprojectComponent } from './taskproject.component';
 
@@ -15,6 +15,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 
 @NgModule({
   imports: [TaskprojectRoutingModule, FormsModule, CommonModule, NgbModule, NgbTypeaheadModule,
+    SharepipemoduleModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,
