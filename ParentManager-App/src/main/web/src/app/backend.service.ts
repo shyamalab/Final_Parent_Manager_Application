@@ -52,6 +52,15 @@ export class BackendService {
       )
   }
 
+  //User Service - DeleteUser
+
+  deleteUser(id): Observable<any> {
+    return this._httpclient.delete<any>(this.url + "delete/user/" + id, this.httpOptions)
+      .pipe(
+        retry(1),
+        catchError(this.ErrorHanlding)
+      )
+  }
 
   ErrorHanlding(error) {
     let errorMessage = '';
