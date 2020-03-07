@@ -157,5 +157,18 @@ export class TaskuserComponent implements OnInit {
     this.isEdit = false;
   }
 
+  deleteUser(user: any) {
+    this.screenLoader = true;
+    this.backendService.deleteUser(user.user_ID).subscribe(
+      (data: any) => {
+        this.screenLoader = false;
+        this.modalHeading = "Success Message";
+        this.modalBody = 'User Deleted Successfully';
+        document.getElementById("submitModalOpener").click();
+        this.loadUserslist();
+
+      }
+    );
+  }
 
 }
