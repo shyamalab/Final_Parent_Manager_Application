@@ -1,0 +1,6 @@
+node
+dist
+e2e
+.idea
+node_modules
+target

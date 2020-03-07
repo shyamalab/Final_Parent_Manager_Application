@@ -1,0 +1,71 @@
+package com.example.taskmgr.test;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+
+import org.junit.Assert;
+import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.web.client.TestRestTemplate;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+
+import com.example.taskmgr.model.Users;
+
+public class SampleTestCase {
+	
+	public SampleTestCase() {
+
+		// TODO Auto-generated constructor stub
+	}
+
+	public SampleTestCase(String test) {
+		System.out.println("est"+test);
+	}
+
+	@Autowired
+	private TestRestTemplate restTemplate;
+
+	@Test
+	public void contextLoads() {
+
+	}
+	
+	@Test
+	public void firsttestcase() {
+		System.out.println("First Test Case Program");
+	}
+	
+	@Test
+	public void test04GetAllUsers() {
+		HttpHeaders headers = new HttpHeaders();
+		HttpEntity<String> entity = new HttpEntity<String>(null, headers);
+		ResponseEntity<String> response = restTemplate.exchange("http://localhost:8082/api/all/users/", HttpMethod.GET, entity,
+				String.class);
+		Assert.assertEquals(200, response.getStatusCodeValue());
+		assertNotNull(response.getBody());
+	}
+	
+	@Test
+	public void test01_indexPageShouldReturnDefaultMessage() {
+		System.out.println("est");
+		assertThat(this.restTemplate.getForObject("http://localhost:8082/home/", String.class))
+				.contains("Welcome to Project Manager Application Page");
+	}
+	
+	@Test
+	public void test02CreateNewUser() {
+		Users user = new Users();
+		user.setEmployeeID("40660");
+		user.setFirstName("Shyamala");
+		user.setLastName("B");
+		ResponseEntity<Users> postResponse = restTemplate.postForEntity("http://localhost:8082" + "/api/add/user", user, Users.class);
+		System.out.println("postResponse"+postResponse);
+		assertNotNull(postResponse);
+		assertEquals(200, postResponse.getStatusCodeValue());
+		assertNotNull(postResponse.getBody());
+	}
+}
