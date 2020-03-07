@@ -114,6 +114,59 @@
 <hr>
 
 
+<body ng-controller="MainCtrl">
+  <form #viewProjectForm="ngForm" novalidate>
+    <div class="row my-3 p-3 bg-white rounded box-shadow">
+      <br /><br />
+      <div class="row col-xs-8 col-sm-8 col-md-8" id="userSortDiv">
+        <div class="form-group">
+          <input type="text" name="searchProject" placeholder="{{'Search Project TextBox' | translate}}" [(ngModel)]="searchProject"
+            autofocus style="width:550px;">
+        </div>
+        <div class="form-group col-xs-12 col-sm-12 col-md-12">
+          <label for="Sort"><b id="sort">{{'Sort By' | translate}}:</b></label>
+          <button type="button" class="btn btn-primary mx-2" (click)=onClickSortProject($event)
+            id="start_Dates">{{'Start Date' | translate}}</button>
+          <button type="button" class="btn btn-primary mx-2" (click)=onClickSortProject($event)
+            id="end_Dates">{{'End Date' | translate}}</button>
+          <button type="button" class="btn btn-primary mx-2" (click)=onClickSortProject($event)
+            id="prioritys">{{'Priority' | translate}}</button>
+            <button type="button" class="btn btn-primary mx-2" (click)=onClickSortProject($event)
+            id="projectstatuss">{{'Task Completed' | translate}}</button>
+          <br /><br />
+          <div>
+            <ul class="list-group" *ngFor="let projectdata of allProjectList | projectSearchPipe : searchProject">
+              <li class="list-group-item" style="padding-left: 0px;">
+                <table style="width:100%">
+                  <tr>
+                    <td colspan="2" style="width:350px;"><b id="userlist_title">{{'Project' | translate}}: </b>{{projectdata.project}}</td>
+                    <td><b id="userlist_title" style="width:100px;">{{'Priority' | translate}}: </b></td>
+                    <td rowspan="2" style="text-align: center;width:100px; background-color: white;"><button type="button" class="btn btn-info"
+                      (click)=editProject(projectdata)  [disabled]="projectdata.projectstatus">{{'Update' | translate}}</button></td>
+          
+                  </tr>
+                   <tr>
+                    <td><b id="userlist_title" style="width:175px;padding: 0em 0em 0em;">{{'No Of Tasks' | translate}}: </b>{{projectdata.taskcount}}</td>
+                    <td><b id="userlist_title" style="width:175px;">{{'Completed' | translate}}: </b>{{projectdata.projectstatus?"Suspend":"Active"}}</td>
+                    <td rowspan="2" style="text-align: center;">{{projectdata.priority}}</td>
+                  </tr>
+              <tr>
+                    <td><b id="userlist_title" style="width:175px;">{{'Start Date' | translate}}: </b>{{projectdata.start_Date}}</td>
+                    <td><b id="userlist_title" style="width:175px;">{{'End Date' | translate}}: </b>{{projectdata.end_Date}}</td>
+                    <td style="text-align: center;width:100px; background-color: white;"><button type="button" class="btn btn-secondary mx-2"
+                      (click)=suspendProject(projectdata) [disabled]="projectdata.projectstatus">{{'Suspend' | translate}}</button></td>
+                  </tr>
+                </table>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+</body>
+
 <!-- The Modal -->
 <div class="modal fade" role="dialog" id="submitModal1" tabindex="-1">
   <div class="modal-dialog">
