@@ -13,10 +13,5 @@ public class IndexController {
     public String sayHello() {
 		return "forward:/index.html";
     }
-	
-//    @GetMapping
-//    public String index(Model model){		
-//        return "Welcome to Project Manager Application Page";
-//    }
 
 }

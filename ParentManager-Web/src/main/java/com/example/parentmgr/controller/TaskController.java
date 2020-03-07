@@ -25,7 +25,7 @@ public class TaskController {
     
 	@PostMapping(path="/add/user")
 	public Users addUser(@Valid @RequestBody Users user) {
-		logger.info("Add a New User");
+		logger.info("Add a New User for test");
 		return usermgrService.addUser(user);
 	}
 
