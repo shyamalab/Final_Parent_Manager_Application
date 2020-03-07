@@ -2,5 +2,7 @@
 .idea
 node_modules
 target
+/metadata
+/.metadata
 metadata
 .metadata

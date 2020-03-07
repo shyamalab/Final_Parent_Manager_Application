@@ -1,7 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
-
+import { SharepipemoduleModule } from '../pipes/sharepipemodule/sharepipemodule.module';
 import { AddtaskRoutingModule } from './addtask-routing.module';
 import { AddtaskComponent } from './addtask.component';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
@@ -17,6 +17,7 @@ export function HttpLoaderFactory(http: HttpClient) {
   declarations: [AddtaskComponent],
   imports: [
     CommonModule,
+    SharepipemoduleModule.forRoot(),
     AddtaskRoutingModule, NgbModule, NgbTypeaheadModule,
     FormsModule,
     TranslateModule.forRoot({

@@ -1,7 +1,14 @@
 package com.example.parentmgr.controller;
 
+import com.example.parentmgr.model.Parent_Task;
+import com.example.parentmgr.model.Project;
+import com.example.parentmgr.model.Task;
 import com.example.parentmgr.model.Users;
+import com.example.parentmgr.repository.ParentTaskRepository;
+import com.example.parentmgr.repository.ProjectRepository;
 import com.example.parentmgr.repository.UsersRepository;
+import com.example.parentmgr.service.ProjectManagerService;
+import com.example.parentmgr.service.TaskManagerService;
 import com.example.parentmgr.service.UserManagerService;
 
 import org.slf4j.Logger;
@@ -20,14 +27,26 @@ import javax.validation.Valid;
 @RequestMapping("/api")
 public class TaskController {
 	
-	private final static  Logger logger = LoggerFactory.getLogger(TaskController.class);
- 
-    @Autowired
-    UserManagerService usermgrService;
-        
-    @Autowired
-    UsersRepository usersRepository;
-    
+	private final static Logger logger = LoggerFactory.getLogger(TaskController.class);
+
+	@Autowired
+	TaskManagerService taskmgrService;
+
+	@Autowired
+	UserManagerService usermgrService;
+
+	@Autowired
+	ProjectManagerService projectmgrService;
+
+	@Autowired
+	ParentTaskRepository parenttaskRepository;
+
+	@Autowired
+	UsersRepository usersRepository;
+
+	@Autowired
+	ProjectRepository projectRepository;
+	    
 	@PostMapping(path="/add/user")
 	public Users addUser(@Valid @RequestBody Users user) {
 		logger.info("Add a New User");
@@ -73,5 +92,73 @@ public class TaskController {
 		}
 		 return response;
 	}
+	
+
+	@PostMapping(path="/add/project")
+	public Project addProject(@Valid @RequestBody Project project) {
+		logger.info("Add a New Project"+project);
+		return projectmgrService.addProject(project);
+	}
+	
+	@GetMapping(path="/get/project/{id}", produces = "application/json")
+	public ResponseEntity<Project> getProject(@PathVariable(value = "id") Long project_ID) {
+		logger.info("Retrieve the existing Project By Id");
+
+		Project project = projectmgrService.getProjectByID(project_ID);
+		
+		return ResponseEntity.ok().body(project);
+	}
+
+	@PutMapping(path="/project/{id}", consumes = "application/json", produces = "application/json")
+	public ResponseEntity<Project> updateProject(@PathVariable(value = "id") Long project_ID, @Valid @RequestBody Project projectDetails) {
+		logger.info("Updated the existing Project");
+
+		Project project = projectmgrService.updateProject(project_ID, projectDetails);
+		
+		return ResponseEntity.ok().body(project);
+	}
+	
+	@GetMapping(path="/all/projects", produces = "application/json")
+	public ResponseEntity<List<Project>> getAllProject() {
+		logger.info("Listed all User details");
+		List<Project> projectList = projectmgrService.getAllProjects();
+		
+		return ResponseEntity.ok().body(projectList);
+	}
+	
+	@GetMapping(path="/all/projects/active", produces = "application/json")
+	public ResponseEntity<List<Project>> getAllActiveProject() {
+		logger.info("Listed all Active Project details");
+		List<Project> projectList = projectmgrService.getAllActiveProjects();
+		
+		return ResponseEntity.ok().body(projectList);
+	}
+	
+   @PostMapping(path="/add/task")
+    public void addTask(@Valid @RequestBody Task task) {
+    	logger.info("Created a new Task");
+    	
+    	if(task.isIsparent()) {
+    		 taskmgrService.createParentTask(task);
+    	} else {
+             taskmgrService.createTask(task);
+    	}
+  }
+
+    @GetMapping(path="/all/tasks", produces = "application/json")
+    public ResponseEntity<List<Task>> getAllTasks() {
+    	logger.info("Listed all Task details");
+    	List<Task> taskList = taskmgrService.getAllTasks();
+    
+    	return ResponseEntity.ok().body(taskList);
+    }
+    
+    @GetMapping(path="/all/parenttasks", produces = "application/json")
+    public ResponseEntity<List<Parent_Task>> getAllParentTasks() {
+    	logger.info("Listed all Parent Task details");
+    	List<Parent_Task> partaskList = taskmgrService.getAllParentTasks();
+    
+    	return ResponseEntity.ok().body(partaskList);
+    }
 	
 }

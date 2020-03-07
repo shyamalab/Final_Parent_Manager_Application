@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { retry, catchError } from 'rxjs/operators';
 import { User } from './Users';
 import { Project } from './Project';
+import { Task } from './Task';
 
 @Injectable({
   providedIn: 'root'
@@ -61,7 +62,7 @@ export class BackendService {
         catchError(this.ErrorHanlding)
       )
   }
-  
+
  //Project Service - Add
 
  addprojectService(data): Observable<Project> {
@@ -99,6 +100,35 @@ updateProject(id, data): Observable<Project> {
       catchError(this.ErrorHanlding)
     )
 }
+
+//Task Service - Add
+
+addtaskService(data): Observable<Task> {
+  return this._httpclient.post<Task>(this.url + "add/task", JSON.stringify(data), this.httpOptions)
+    .pipe(
+      retry(2),
+      catchError(this.ErrorHanlding)
+    )
+}
+
+//Task Service - Get All
+getAllTasklist(): Observable<any> {
+  return this._httpclient.get(this.url + "all/tasks", this.httpOptions)
+    .pipe(
+      retry(2),
+      catchError(this.ErrorHanlding)
+    )
+}
+
+  //Task Service - Get All Parent
+
+  getAllParentTasklist(): Observable<any> {
+    return this._httpclient.get(this.url + "all/parenttasks", this.httpOptions)
+      .pipe(
+        retry(2),
+        catchError(this.ErrorHanlding)
+      )
+  }
 
   ErrorHanlding(error) {
     let errorMessage = '';

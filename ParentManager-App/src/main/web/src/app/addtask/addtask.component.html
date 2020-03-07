@@ -1,1 +1,296 @@
-<p> Add Task Works </p>
+<div class="row my-3 p-3 bg-white rounded box-shadow">
+  <div class="col-xs-12 col-sm-2 col-md-2"></div>
+  <div class="col-xs-12 col-sm-8 col-md-8">
+    <form method="post" name="form" (ngSubmit)="f.form.valid && addtask()" #f="ngForm" novalidate>
+      <div class="form-group row">
+        <div class="col-sm-2">
+          <div class="pt-2">
+            <label for="project" class="col-form-label">{{ 'Project' | translate }}</label>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="pt-2">
+            <input type="text" class="form-control" id="project" maxlength="50" required name="project" readonly
+              #project="ngModel" [(ngModel)]="taskmodel.project.project" [disabled]="taskmodel.isparent"
+              [ngClass]="{ 'is-invalid': f.submitted && project.invalid }" />
+            <div *ngIf="f.submitted && project.invalid" class="invalid-feedback">
+              <div *ngIf="project.errors.required">{{ 'ErrorProjectsRequired' | translate }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="pt-0">
+            <button type="button" id="submitModalOpener2" class="oval" data-toggle="modal" data-target="#submitModal2"
+              [disabled]="taskmodel.isparent" [disabled]="isEdit">
+              {{'Search' | translate}}
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-sm-2">
+          <div class="pt-1">
+            <label for="task" class="col-form-label">{{ 'Task' | translate }}</label>
+          </div>
+        </div>
+        <div class="col-sm-8">
+          <input type="text" class="form-control" id="task" maxlength="50" required name="task" #task="ngModel"
+            [(ngModel)]="taskmodel.task" placeholder="{{ 'TaskLabel' | translate }}"
+            [ngClass]="{ 'is-invalid': f.submitted && task.invalid }" />
+          <div *ngIf="f.submitted && task.invalid" class="invalid-feedback">
+            <div *ngIf="task.errors.required">{{ 'ErrorTaskRequired' | translate }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-sm-2">
+        </div>
+        <div class="col-sm-3">
+          <div class="pt-2">
+            <label for="isparent" class="container">{{ 'setParent' | translate }}
+              <input type="checkbox" class="form-control" id="isparent" name="isparent" #isparent="ngModel"
+                [(ngModel)]="taskmodel.isparent" (change)="taskmodel.isparent" [disabled]="isEdit" />
+              <span class="checkmark"></span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-group row">
+        <div class="col-sm-2">
+          <div class="pt-3">
+            <label for="priority" class="col-form-label">{{ 'Priority' | translate }}</label>
+          </div>
+        </div>
+        <div class="col-sm-8">
+          <div class="pt-2">
+            <input type="range" class="form-control" default="0" min="0" max="30" name="priority"
+              [disabled]="taskmodel.isparent" [(ngModel)]="taskmodel.priority" class="slider" id="priority">
+          </div>
+        </div>
+        <div class="col-sm-1">
+          <div class="pt-3">
+            <b>{{taskmodel.priority}}</b>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-sm-2">
+          <div class="pt-2">
+            <label for="parent" class="col-form-label">{{ 'Parent Task' | translate }}</label>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="pt-2">
+            <input type="text" class="form-control" id="parent" maxlength="50" name="parent" readonly #parent="ngModel"
+              [(ngModel)]="taskmodel.parenTask" [disabled]="taskmodel.isparent" />
+            <select class="form-control" id="parent1" maxlength="50" name="parTask" #parent1="ngModel"
+              [(ngModel)]="taskmodel.parenTask" [disabled]="taskmodel.isparent">
+              <option *ngFor="let item of allTaskList" [value]="item.task">{{item.task}}</option>
+            </select>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="pt-0">
+            <button type="button" id="submitModalOpener3" class="oval" data-toggle="modal" data-target="#submitModal3"
+              [disabled]="taskmodel.isparent">
+              {{'Search' | translate}}
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-sm-2">
+          <div class="pt-2">
+            <label for="start_Date" class="col-form-label">{{ 'Start Date' | translate}}</label>
+          </div>
+        </div>
+        <div>
+          <div class="pt-2 pl-3">
+            <input type="date" style="width:159px;" class="form-control" id="start_Date" name="start_Date"
+              #start_Date="ngModel" [(ngModel)]="taskmodel.start_Date" [disabled]="taskmodel.isparent"
+              [ngClass]="{ 'is-invalid': f.submitted && start_Date.invalid }" [readonly]="dateEnable"
+              (change)="compareTwoDates()" required />
+          </div>
+        </div>
+        <div>
+          <div class="pt-2 pl-5">
+            <label for="end_Date" style="width:75px;" class="col-form-label">{{ 'End Date' | translate }}:</label>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="pt-2">
+            <input type="date" style="width:159px;" class="form-control" id="end_Date" name="end_Date"
+              #end_Date="ngModel" [disabled]="taskmodel.isparent" min="{{taskmodel.start_Date}}"
+              [(ngModel)]="taskmodel.end_Date" [readonly]="dateEnable" (change)="compareTwoDates()"
+              [ngClass]="{ 'is-invalid': f.submitted && end_Date.invalid }" required />
+            <div *ngIf="f.submitted && end_Date.invalid" class="invalid-feedback">
+              <div *ngIf="end_Date.errors.required">{{ 'ErrorDateRequired' | translate }}</div>
+            </div>
+          </div>
+          <div class="pt-2">
+            <div *ngIf="error.isError" class="alert alert-danger">
+              {{ error.errorMessage }}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-sm-2">
+          <div class="pt-2">
+            <label for="user" class="col-form-label">{{ 'User' | translate }}</label>
+          </div>
+        </div>
+        <div class="col-sm-6">
+          <div class="pt-2">
+            <input type="text" class="form-control" id="user" maxlength="50" required name="user" readonly
+              #user="ngModel" [(ngModel)]="taskmodel.users.firstName" [disabled]="taskmodel.isparent"
+              [ngClass]="{ 'is-invalid': f.submitted && user.invalid }" />
+            <div *ngIf="f.submitted && user.invalid" class="invalid-feedback">
+              <div *ngIf="user.errors.required">{{ 'ErrorUserRequired' | translate }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-3">
+          <div class="pt-0">
+            <button type="button" id="submitModalOpener1" class="oval" data-toggle="modal" data-target="#submitModal1"
+              [disabled]="taskmodel.isparent">
+              {{'Search' | translate}}
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="form-group row">
+        <div class="col-sm-4 col-form-label"></div>
+        <div class="col-sm-12 input-group"></div>
+        <div class="col-sm-12 row">
+          <div class="col-sm-12 input-group">
+            <div class=" row" *ngIf="!isEdit">
+              &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+              <div class="pl-5">
+                <button type="submit" class="btn btn-success mx-3">{{ 'Add Task' | translate }}</button>
+                <button type="button" class="btn btn-info mx-5" (click)=resetButton()> {{ 'Reset' | translate }}
+                </button>
+              </div>
+            </div>
+            <div class=" row" *ngIf="isEdit">
+              &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+              <button type="submit" class="btn btn-success mx-3"
+                [disabled]="error.isError">{{ 'Update Task' | translate }}</button>
+              <button type="button" class="btn btn-danger mx-5" (click)=CancelTaskScreen() routerLink="/viewtask">
+                {{ 'Cancel' | translate }}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" role="dialog" id="submitModal1" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title"><b>{{'Search User' | translate}}</b></h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body"><b>
+          <div class="col-sm-18">
+            {{'Search User' | translate}}:
+            <input type="text" name="searchUser" placeholder="{{'Search User' | translate}}" [(ngModel)]="searchUser"
+              autofocus>
+          </div>
+          <ul class="searchmodal">
+            <li *ngFor="let user of allUserList | userSearchPipe : searchUser" [class.selected]="user === selectedUser"
+              (click)="onSelectManager(user)">
+              <span class="badge">{{user.employeeID}}</span> {{user.firstName}}
+            </li>
+          </ul>
+        </b></div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- The Modal -->
+<div class="modal fade" role="dialog" id="submitModal2" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title"><b>{{'Search Project' | translate}}</b></h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body"><b>
+          <div class="col-sm-18">
+            {{'Search Project' | translate}}:
+            <input type="text" name="searchProject" placeholder="{{'Search Project TextBox' | translate}}"
+              [(ngModel)]="searchProject" autofocus>
+          </div>
+          <ul class="searchmodal">
+            <li *ngFor="let project of allProjectList | projectSearchPipe : searchProject"
+              [class.selected]="project === selectedProject" (click)="onSelectProject(project)">
+              <span class="badge">{{project.projectID}}</span> {{project.project}}
+            </li>
+          </ul>
+        </b></div>
+    </div>
+  </div>
+</div>
+
+<!-- The Modal -->
+<div class="modal fade" role="dialog" id="submitModal3" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title"><b>{{'Search Parent Task' | translate}}</b></h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body"><b>
+          <div class="col-sm-18">
+            {{'Search Parent Task' | translate}}:
+            <input type="text" name="searchParent" placeholder="{{'Search Parent Task TextBox' | translate}}"
+              [(ngModel)]="searchParent" autofocus>
+          </div>
+          <ul class="searchmodal">
+            <li *ngFor="let parent of allParentTaskList | parentSearchPipe : searchParent"
+              [class.selected]="parent === selectParentTask" (click)="onSelectParentTask(parent)">
+              <span class="badge">{{parent.parent_ID}}</span> {{parent.parTask}}
+            </li>
+          </ul>
+        </b></div>
+    </div>
+  </div>
+</div>
+
+<button type="button" id="submitModalOpener" class="btn btn-primary" [hidden]="true" data-toggle="modal"
+  data-target="#submitModal">
+</button>
+
+<!-- The Modal -->
+<div class="modal fade" role="dialog" id="submitModal" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title"><b>{{modalHeading}}</b></h4>
+        <span *ngIf="isEdit">
+          <button type="button" class="close" data-dismiss="modal" routerLink="/viewtask">&times;</button></span>
+        <span *ngIf="!isEdit">
+          <button type="button" class="close" data-dismiss="modal">&times;</button></span>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body"><b>
+          {{modalBody}}
+        </b></div>
+    </div>
+  </div>
+</div>

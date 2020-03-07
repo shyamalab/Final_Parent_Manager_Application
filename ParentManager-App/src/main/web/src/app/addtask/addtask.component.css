@@ -1,0 +1,217 @@
+.d-flex .active-nav{
+  color: #17a2b8!important;
+}
+.text-secondary {
+  color: lightblue !important;
+}
+.form-group.hidden {
+    width: 0;
+    margin: 0;
+    border: none;
+    padding: 0;
+  }
+
+input[type=range] {
+    height: 34px;
+    -webkit-appearance: none;
+    margin: 10px 0;
+    width: 100%;
+  }
+  input[type=range]::-webkit-slider-runnable-track {
+    width: 100%;
+    height: 11px;
+    cursor: pointer;
+    animate: 0.2s;
+    box-shadow: 1px 1px 1px #000000;
+    background: #74A9D8;
+    border-radius: 1px;
+    border: 0px solid #010101;
+  }
+  input[type=range]::-webkit-slider-thumb {
+    box-shadow: 1px 1px 1px #000031;
+    border: 1px solid #00001E;
+    height: 26px;
+    width: 26px;
+    border-radius: 15px;
+    background: #FFFFFF;
+    cursor: pointer;
+    -webkit-appearance: none;
+    margin-top: -8px;
+  }
+  input[type=range]::-moz-range-thumb {
+    box-shadow: 1px 1px 1px #000031;
+    border: 1px solid #00001E;
+    height: 20px;
+    width: 26px;
+    border-radius: 15px;
+    background: #FFFFFF;
+    cursor: pointer;
+  }
+.input-group{
+    width:320px;
+}
+table, th, td {
+  border-collapse: separate;
+ /* // border-spacing: 5px; */
+  padding: 5px;
+}
+li{
+  border-top: 1px dashed grey;
+/* left:230px; */
+
+  border-left: none;
+  border-right: none;
+  border-bottom: 1px dashed grey;
+}
+
+th, td {
+  text-align: left; 
+  
+}
+tr td {
+  font-weight: normal;
+  background-color : lightgrey;
+ }
+ #userSortDiv{
+left:170px;
+ }
+
+ .modal-header{
+background-color: #74A9D8;
+color : maroon;
+ }
+ #sort{
+   font-weight: 1000;
+   color:blue;
+ }
+ #userlist_title{
+  font-weight: 1000;
+  color:sienna;
+}
+tr[_ngcontent-vaa-c108] td[_ngcontent-vaa-c108]:first-child {
+  width: 175px;
+  font-weight: normal;
+  background-color: red;
+}
+.searchmodal {
+  margin: 0 0 2em 0;
+  list-style-type: none;
+  padding: 0;
+  width: 30em;
+}
+.searchmodal li {
+  cursor: pointer;
+  position: relative;
+  left: 0;
+  background-color: #EEE;
+  margin: .5em;
+  padding: .3em 0;
+  height: 2.6em;
+  border-radius: 4px;
+}
+.searchmodal li:hover {
+  color: #607D8B;
+  background-color: #DDD;
+  left: .1em;
+}
+.searchmodal li.selected {
+  background-color:lightgreen;
+  color: white;
+}
+.searchmodal li.selected:hover {
+  background-color: rgb(136, 210, 219);
+  color: white;
+}
+.searchmodal .badge {
+  display: inline-block;
+  font-size: small;
+  color: white;
+  padding: 0.8em 0.7em 0 0.7em;
+  background-color:#405061;
+  line-height: 1em;
+  position: relative;
+  left: -1px;
+  top: -4px;
+  height: 2.8em;
+  margin-right: .8em;
+  border-radius: 4px 0 0 4px;
+}
+.oval {
+  height: 50px;
+  width: 100px;
+  background-color:lightseagreen;
+  border-radius: 50%;
+}
+.container {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  line-height: 1.2;
+  /* margin-bottom: 1px; */
+  cursor: pointer;
+  font-size: 15px;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
+/* Hide the browser's default checkbox */
+.container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Create a custom checkbox */
+.checkmark {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 20px;
+  width: 20px;
+  background-color: #eee;
+}
+
+/* On mouse-over, add a grey background color */
+.container:hover input ~ .checkmark {
+  background-color: #ccc;
+}
+
+/* When the checkbox is checked, add a blue background */
+.container input:checked ~ .checkmark {
+  background-color: #2196F3;
+}
+
+/* Create the checkmark/indicator (hidden when not checked) */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+}
+
+/* Show the checkmark when checked */
+.container input:checked ~ .checkmark:after {
+  display: block;
+}
+
+/* Style the checkmark/indicator */
+.container .checkmark:after {
+  left: 9px;
+  right:12px;
+  top: 5px;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  -webkit-transform: rotate(45deg);
+  -ms-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+label{
+  color:steelblue;
+  font-weight: bold;
+}
+
