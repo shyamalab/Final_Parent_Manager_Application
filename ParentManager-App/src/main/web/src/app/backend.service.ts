@@ -52,7 +52,16 @@ export class BackendService {
         catchError(this.ErrorHanlding)
       )
   }
+  //User Service - DeleteUser
 
+  deleteUser(id): Observable<any> {
+    return this._httpclient.delete<any>(this.url + "delete/user/" + id, this.httpOptions)
+      .pipe(
+        retry(1),
+        catchError(this.ErrorHanlding)
+      )
+  }
+  
  //Project Service - Add
 
  addprojectService(data): Observable<Project> {
