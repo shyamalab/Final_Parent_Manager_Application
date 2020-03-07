@@ -7,6 +7,8 @@ import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { TaskuserComponent } from './taskuser.component';
 import { TaskuserRoutingModule } from './taskuser-routing.module';
 import { HttpClientModule, HttpClient } from '@angular/common/http';
+import { SearchByUser} from './../pipes/SearchByUser';
+import { SharepipemoduleModule } from './../pipes/sharepipemodule/sharepipemodule.module'
 
 export function HttpLoaderFactory(http: HttpClient) {
   return new TranslateHttpLoader(http, './assets/i18n/', '.json');
@@ -14,6 +16,7 @@ export function HttpLoaderFactory(http: HttpClient) {
 
 @NgModule({
   imports: [TaskuserRoutingModule, FormsModule, CommonModule, NgbModule, NgbTypeaheadModule,
+    SharepipemoduleModule.forRoot(),
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

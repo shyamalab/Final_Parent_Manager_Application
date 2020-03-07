@@ -31,6 +31,28 @@ export class BackendService {
       )
   }
 
+  //User Service - GetAll
+
+  getAllUserslist(): Observable<any> {
+    return this._httpclient.get(this.url + "all/users", this.httpOptions)
+      .pipe(
+        retry(2),
+        catchError(this.ErrorHanlding)
+      )
+  }
+
+
+  //User Service - Update User
+
+  updateUser(id, data): Observable<User> {
+    return this._httpclient.put<User>(this.url + "users/" + id, JSON.stringify(data), this.httpOptions)
+      .pipe(
+        retry(1),
+        catchError(this.ErrorHanlding)
+      )
+  }
+
+
   ErrorHanlding(error) {
     let errorMessage = '';
     if (error.error instanceof ErrorEvent) {

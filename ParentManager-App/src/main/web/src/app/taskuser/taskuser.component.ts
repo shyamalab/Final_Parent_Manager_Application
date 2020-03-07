@@ -14,11 +14,13 @@ import * as _ from 'underscore';
 export class TaskuserComponent implements OnInit {
 
   User: any;
+  allUserList: any = [];
   submitstatus: string;
   modalBody: string;
   modalHeading: string;
   screenLoader: boolean = false;
 
+  sortingName: string;
   isEdit: boolean = false;
 
   @Input() usermodel = {
@@ -37,10 +39,14 @@ export class TaskuserComponent implements OnInit {
   constructor(private backendService: BackendService,
     public router: Router,
     private translate: TranslateService) {
-
+    backendService.getAllUserslist().subscribe((data: any) => {
+      this.allUserList = data;
+      this.screenLoader = false;
+    });
   }
 
   ngOnInit() {
+    this.loadUserslist();
     this.submitted = false;
     this.translate.get(['FirstNameLabel', 'LastNameLabel', 'EmployeeIdLabel'])
       .subscribe(translations => {
@@ -50,9 +56,24 @@ export class TaskuserComponent implements OnInit {
       });
   }
 
+  loadUserslist() {
+    return this.backendService.getAllUserslist().subscribe((data: any) => {
+      this.allUserList = data;
+      this.screenLoader = true;
+    });
+  }
+
+  onClickSortUser(event) {
+    this.loadUserslist();
+    var target = event.target || event.srcElement || event.currentTarget;
+    var idAttr = target.attributes.id;
+    var value = idAttr.nodeValue;
+    this.allUserList = _.sortBy(this.allUserList, value.substring(0, value.length - 1));
+  }
 
   adduser(data) {
     if (this.isEdit) {
+      this.UpdateUser();
       this.isEdit = false;
     } else {
       this.backendService.adduserService(this.usermodel)
@@ -68,6 +89,7 @@ export class TaskuserComponent implements OnInit {
             lastName: '',
             employeeID: ''
           }
+          this.loadUserslist();
         },
           error => {
             this.errormessage = error;
@@ -93,12 +115,47 @@ export class TaskuserComponent implements OnInit {
       lastName: '',
       employeeID: ''
     }
-  
   }
-  
+
+  editUser(user: any) {
+    this.screenLoader = true;
+    this.User = user;
+    this.usermodel = {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      employeeID: user.employeeID
+    }
+    this.isEdit = true;
+  }
+
+  UpdateUser() {
+    this.backendService.updateUser(this.User.user_ID, this.usermodel)
+      .subscribe((data: {}) => {
+        this.router.navigate(['/adduser']);
+        this.submitted = true;
+        this.errormessage = "";
+        this.modalHeading = 'User Status';
+        this.modalBody = 'Updated User Details Successfully';
+        document.getElementById("submitModalOpener").click();
+        this.loadUserslist();
+      },
+        error => {
+          this.errormessage = error;
+          if (error = "409") {
+            this.modalHeading = 'Failed To Add User';
+            this.modalBody = 'Users already exist with same employee_id';
+            document.getElementById("submitModalOpener").click();
+          }
+          this.submitted = false;
+          this.isEdit = true;
+          this.editUser(this.User);
+        })
+  }
+
   CancelUserScreen() {
     this.resetButton();
     this.isEdit = false;
   }
+
 
 }

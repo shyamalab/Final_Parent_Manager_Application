@@ -63,6 +63,55 @@
     </form>
   </div>
 </div>
+
+<hr>
+
+<body ng-controller="MainCtrl">
+  <form #viewUserForm="ngForm" novalidate>
+    <div class="row my-3 p-3 bg-white rounded box-shadow">
+      <br /><br />
+      <div class="row col-xs-8 col-sm-8 col-md-8" id="userSortDiv">
+        <div class="form-group col-xs-12 col-sm-12 col-md-12">
+          <input type="text" name="searchUser" placeholder="{{'Search User' | translate}}" [(ngModel)]="searchUser"
+            autofocus> &nbsp;&nbsp;&nbsp;
+          <label for="Sort"><b id="sort">{{'Sort' | translate}}:</b></label>
+          <button type="button" class="btn btn-primary mx-2" (click)=onClickSortUser($event)
+            id="firstNames">{{'First Name' | translate}}</button>
+          <button type="button" class="btn btn-primary mx-2" (click)=onClickSortUser($event)
+            id="lastNames">{{'Last Name' | translate}}</button>
+          <button type="button" class="btn btn-primary mx-2" (click)=onClickSortUser($event)
+            id="employeeIDs">{{'Employee ID' | translate}}</button>
+          <br /><br />
+          <div>
+            <ul class="list-group" *ngFor="let user of allUserList | userSearchPipe : searchUser">
+              <li class="list-group-item">
+                <table>
+                  <tr>
+                    <td><b id="userlist_title">{{'First Name' | translate}}: </b>{{user.firstName}}</td>
+
+                    <td style="text-align: center;"><button type="button" class="btn btn-info"
+                        (click)=editUser(user)>{{'Edit' | translate}}</button></td>
+                  </tr>
+                  <tr>
+                    <td><b id="userlist_title">{{'Last Name' | translate}}: </b>{{user.lastName}}</td>
+
+                    <td style="text-align: center;"><button type="button" class="btn btn-secondary mx-2"
+                        (click)=deleteUser(user)>{{'Delete' | translate}}</button></td>
+                  </tr>
+                  <tr>
+                    <td><b id="userlist_title">{{'Employee ID' | translate}}: </b>{{user.employeeID}}</td>
+                  </tr>
+                </table>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+
+</body>
+
 <button type="button" id="submitModalOpener" class="btn btn-primary" [hidden]="true" data-toggle="modal"
   data-target="#submitModal">
 </button>

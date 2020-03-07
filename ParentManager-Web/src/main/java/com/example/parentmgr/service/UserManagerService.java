@@ -75,6 +75,14 @@ public class UserManagerService {
 		}
 	}
 	
+	public void deleteUserByID(Long userId) {
 
+		logger.debug("Service to delete tasks by id");
+
+		this.getUserByID(userId);
+
+		usersRepository.deleteById(userId);
+
+	}
 
 }

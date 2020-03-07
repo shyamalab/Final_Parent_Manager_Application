@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.validation.Valid;
 
@@ -57,5 +59,19 @@ public class TaskController {
 		
 		return ResponseEntity.ok(user);
 	}
-
+	
+	@DeleteMapping(path="/delete/user/{id}", produces = "application/json")
+	public Map<String, Boolean> deleteUser(@PathVariable(value = "id") Long user_Id) {
+		logger.info("Delete the existing User By Id");
+		Map<String, Boolean> response = new HashMap<>();
+		if (user_Id != null) {
+			usermgrService.deleteUserByID(user_Id);
+			
+	        response.put("deleted the User Details", Boolean.TRUE);
+		} else {
+			throw new IllegalArgumentException(" User Id must not be null");
+		}
+		 return response;
+	}
+	
 }
