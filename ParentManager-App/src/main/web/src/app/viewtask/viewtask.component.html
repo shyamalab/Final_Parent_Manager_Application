@@ -1,1 +1,111 @@
-<p>View Task Works here !!</p>>
+<body ng-controller="MainCtrl">
+    <form #viewTaskForm="ngForm" novalidate>
+        <div class="row my-4 p-3 bg-white rounded box-shadow">
+            <br /><br />
+            <div class="row col-xs-12 col-sm-12 col-md-12" id="userSortDiv">
+                <div class="form-group col-xs-12 col-sm-12 col-md-12">
+                    <div class="pl-2">
+                    <label for="Project"><b id="sort">{{'Project' | translate}}: &nbsp;</b></label>
+                    <input type="text" name="searchProject1" placeholder="{{'Search Project' | translate}}"
+                    [(ngModel)]="searchProject1" autofocus style="width:275px;">&nbsp;&nbsp;
+                    <button type="button" id="submitModalOpener" class="oval" data-toggle="modal"
+                    data-target="#submitModal">
+                    {{'Search' | translate}}
+                </button>
+                &nbsp;&nbsp;
+                    <label for="Sort"><b id="sort">{{'Sort Task By' | translate}}:</b></label>
+                    <button type="button" class="btn btn-primary mx-2" (click)=onClickSortTask($event)
+                        id="start_Dates">{{'Start Date' | translate}}</button>
+                    <button type="button" class="btn btn-primary mx-2" (click)=onClickSortTask($event)
+                        id="end_Dates">{{'End Date' | translate}}</button>
+                    <button type="button" class="btn btn-primary mx-2" (click)=onClickSortTask($event)
+                        id="prioritys">{{'Priority' | translate}}</button>
+                    <button type="button" class="btn btn-primary mx-2" (click)=onClickSortTask($event)
+                        id="endTasks">{{'Task Completed' | translate}}</button>
+                    </div>
+                    <br />
+                    <div>
+                        <ul class="list-group"
+                            *ngFor="let taskdata of allTaskList | projectSearchTaskPipe : searchProject1">
+                            <li class="list-group-item" style="padding-left: 0px;">
+                                <table style="width:100%; border-spacing: 10px;">
+                                    <tr>
+                                        <th style="width:250px;"><b id="userlist_title">{{'Task' | translate}}</b></th>
+                                        <th style="width:250px;"><b id="userlist_title">{{'Parent' | translate}}</b></th>
+                                        <th style="width:75px;"><b id="userlist_title">{{'Priority' | translate}}</b></th>
+                                        <th style="width:110px;"><b id="userlist_title">{{'Start' | translate}}</b></th>
+                                        <th style="width:110px;"><b id="userlist_title">{{'End' | translate}}</b></th>
+                                        <th style="width:100px;"></th>
+                                        <th style="width:130px;"></th>
+                                    </tr>
+                                    <tr>
+                                        <td style="width:200px;">{{taskdata.task}}</td>
+                                        <td style="width:200px;">{{taskdata.parenTask}}</td>
+                                        <td style="width:75px; background-color: white;">{{taskdata.priority}}</td>
+                                        <td style="width:110px; background-color: white;">{{taskdata.start_Date}}</td>
+                                        <td style="width:110px; background-color: white;">{{taskdata.end_Date}}</td>
+                                        <td style="text-align: center; width:100px; background-color: white;"><button
+                                            type="button" class="btn btn-info" routerLink="/edittask/{{taskdata.id}}"
+                                            [disabled]="taskdata.endTask" style="text-align: center; width:100px;">{{'Edit' | translate}}</button></td>
+                                        <td style="text-align:center; width:130px; background-color: white;"><button
+                                            type="button" class="btn btn-secondary mx-2"
+                                            (click)=suspendTask(taskdata)
+                                            [disabled]="taskdata.endTask">{{'End Task' | translate}}</button></td>
+                                    </tr>
+                                </table>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+
+</body>
+<!-- The Modal -->
+<div class="modal fade" role="dialog" id="submitModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <h4 class="modal-title"><b>{{ 'Search Project' | translate }}</b></h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <!-- Modal body -->
+            <div class="modal-body"><b>
+                    <div class="col-sm-18">
+                        {{ 'Search Project' | translate }}:
+                        <input type="text" name="searchProject" placeholder="{{'Search Project TextBox' | translate}}"
+                            [(ngModel)]="searchProject" autofocus>
+                    </div>
+                    <ul class="searchmodal">
+                        <li *ngFor="let project of allProjectList | projectSearchPipe : searchProject"
+                            [class.selected]="project === selectedProject" (click)="onSelectProject(project)">
+                            <span class="badge">{{project.projectID}}</span> {{project.project}}
+                        </li>
+                    </ul>
+                </b></div>
+        </div>
+    </div>
+</div>
+
+<button type="button" id="submitModalOpener1" class="btn btn-primary" [hidden]="true" data-toggle="modal"
+  data-target="#submitModal1">
+</button>
+
+<!-- The Modal -->
+<div class="modal fade" role="dialog" id="submitModal1" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title"><b>{{modalHeading}}</b></h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body"><b>
+          {{modalBody}}
+        </b></div>
+    </div>
+  </div>
+</div>

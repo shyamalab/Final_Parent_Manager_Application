@@ -134,31 +134,75 @@ public class TaskController {
 		return ResponseEntity.ok().body(projectList);
 	}
 	
-   @PostMapping(path="/add/task")
-    public void addTask(@Valid @RequestBody Task task) {
-    	logger.info("Created a new Task");
-    	
-    	if(task.isIsparent()) {
-    		 taskmgrService.createParentTask(task);
-    	} else {
-             taskmgrService.createTask(task);
-    	}
-  }
+	   @PostMapping(path="/add/task")
+	    public void addTask(@Valid @RequestBody Task task) {
+	    	logger.info("Created a new Task");
+	    	
+	    	if(task.isIsparent()) {
+	    		 taskmgrService.createParentTask(task);
+	    	} else {
+	             taskmgrService.createTask(task);
+	    	}
+	  }
 
-    @GetMapping(path="/all/tasks", produces = "application/json")
-    public ResponseEntity<List<Task>> getAllTasks() {
-    	logger.info("Listed all Task details");
-    	List<Task> taskList = taskmgrService.getAllTasks();
-    
-    	return ResponseEntity.ok().body(taskList);
-    }
-    
-    @GetMapping(path="/all/parenttasks", produces = "application/json")
-    public ResponseEntity<List<Parent_Task>> getAllParentTasks() {
-    	logger.info("Listed all Parent Task details");
-    	List<Parent_Task> partaskList = taskmgrService.getAllParentTasks();
-    
-    	return ResponseEntity.ok().body(partaskList);
-    }
+	    @GetMapping(path="/all/tasks", produces = "application/json")
+	    public ResponseEntity<List<Task>> getAllTasks() {
+	    	logger.info("Listed all Task details");
+	    	List<Task> taskList = taskmgrService.getAllTasks();
+	    
+	    	return ResponseEntity.ok().body(taskList);
+	    }
+	    
+	    @GetMapping(path="/all/tasks/current/{id}", produces = "application/json")
+	    public ResponseEntity<List<Task>> getAllTaskswithoutCurrent(@PathVariable(value = "id") Long taskId) {
+	    	logger.info("Listed all Task details without current task");
+	    	List<Task> taskList = taskmgrService.getAllTaskswithoutCurrent(taskId);
+	    
+	    	return ResponseEntity.ok().body(taskList);
+	    }
+
+	    @GetMapping(path="/get/task/{id}", produces = "application/json")
+	    public ResponseEntity<Task> getTask(@PathVariable(value = "id") Long taskId) {
+	    	logger.info("Retrieve the existing Task By Id");
+
+	    	Task task = taskmgrService.getTaskByID(taskId);
+	    	return ResponseEntity.ok().body(task);
+	    }
+	    
+	    @GetMapping(path="/get/parenttask/{id}", produces = "application/json")
+	    public ResponseEntity<Parent_Task> getParentTask(@PathVariable(value = "id") Long partaskId) {
+	    	logger.info("Retrieve the existing Parent Task By Id");
+
+	    	Parent_Task partask = taskmgrService.getParentTaskByID(partaskId);
+	    	return ResponseEntity.ok().body(partask);
+	    }
+	    
+	    @GetMapping(path="/all/parenttasks", produces = "application/json")
+	    public ResponseEntity<List<Parent_Task>> getAllParentTasks() {
+	    	logger.info("Listed all Parent Task details");
+	    	List<Parent_Task> partaskList = taskmgrService.getAllParentTasks();
+	    
+	    	return ResponseEntity.ok().body(partaskList);
+	    }
+
+	    @PutMapping(path="/tasks/{id}", consumes = "application/json", produces = "application/json")
+	    public ResponseEntity<Task> updateTask(@PathVariable(value = "id") Long taskId,
+	                                           @Valid @RequestBody Task taskDetails) {
+	    	logger.info("Updated the existing Task");
+
+	        Task task = taskmgrService.updateTask(taskId, taskDetails);
+	        
+	        return ResponseEntity.ok().body(task);
+	    }
+	    
+	    @PutMapping(path="/end/tasks/{id}", produces = "application/json")
+	    public ResponseEntity<Task> updateEndTask(@PathVariable(value = "id") Long taskId,
+	                                           @Valid @RequestBody Task taskDetails) {
+	    	logger.info("End a created Task");
+
+	    	Task task = taskmgrService.updateEndTask(taskId, taskDetails);
+	    	
+	    	return ResponseEntity.ok().body(task);
+	    }
 	
 }

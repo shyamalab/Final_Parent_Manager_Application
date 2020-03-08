@@ -91,6 +91,18 @@ export class AddtaskComponent implements OnInit {
       this.allTaskList = data;
       this.screenLoader = false;
     });
+    if (this.id != null) {
+      backendService.gettaskbyID(this.id).subscribe((data: any) => {
+        this.taskmodel = data;
+        this.screenLoader = false;
+        this.isEdit = true;
+      })
+      backendService.getAllTasklistwithoutCurrent(this.id).subscribe((data: any) => {
+        this.allTaskList = data;
+        console.log('all', data)
+        this.screenLoader = false;
+      });
+    }
 
   }
 
@@ -129,7 +141,7 @@ export class AddtaskComponent implements OnInit {
 
   addtask(data) {
     if (this.isEdit) {
-      //this.UpdateTask();
+      this.UpdateTask();
       this.screenLoader = false;
       this.isEdit = true;
     } else {
@@ -203,6 +215,26 @@ export class AddtaskComponent implements OnInit {
     this.taskmodel.end_Date = this.formatter.format(this.toDate);
   }
 
+  UpdateTask() {
+    this.backendService.edittask(this.id, this.taskmodel)
+      .subscribe((data: {}) => {
+        this.submitted = true;
+        this.errormessage = "";
+        this.modalHeading = 'Task Status';
+        this.modalBody = 'Updated Task Details Successfully';
+        document.getElementById("submitModalOpener").click();
+        this.loadTasklist();
+        this.backendService.getAllParentTasklist().subscribe((data: any) => {
+          this.allParentTaskList = data;
+          this.screenLoader = false;
+        });
+      },
+        error => {
+          this.errormessage = error;
+          this.submitted = false;
+          this.isEdit = true;
+        })
+  }
 
   CancelTaskScreen() {
     this.resetButton();
