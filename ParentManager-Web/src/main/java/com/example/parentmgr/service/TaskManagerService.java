@@ -8,7 +8,7 @@ import java.util.stream.Collectors;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Example;
+
 import org.springframework.stereotype.Service;
 
 import com.example.parentmgr.exception.ResourceNotFoundException;
@@ -20,7 +20,7 @@ import com.example.parentmgr.repository.ParentTaskRepository;
 import com.example.parentmgr.repository.ProjectRepository;
 import com.example.parentmgr.repository.TaskRepository;
 import com.example.parentmgr.repository.UsersRepository;
-import com.mysql.cj.util.StringUtils;
+
 
 @Service
 public class TaskManagerService {
@@ -107,8 +107,8 @@ public class TaskManagerService {
 				task.setParent_Task(parentTask);
 			}
 
-			if (StringUtils.isNullOrEmpty(task.getParenTask())) {
-				task.setParenTask("This Task has No Parent");
+			if (task.getParenTask() == null || task.getParenTask().equalsIgnoreCase("")) {
+				task.setParenTask("This Task has No Parent Task");
 			}
 
 			if (taskRepository.countByproject(project) != null) {
@@ -159,8 +159,8 @@ public class TaskManagerService {
 			task.setParent_Task(parentTask);
 		}
 
-		if (StringUtils.isNullOrEmpty(task.getParenTask())) {
-			task.setParenTask("This Task has No Parent");
+		if (task.getParenTask() == null || task.getParenTask().equalsIgnoreCase("")) {
+			task.setParenTask("This Task has No Parent Task");
 		}
 
 		if (task.getProject().getProjectID() != taskDetails.getProject().getProjectID()) {
