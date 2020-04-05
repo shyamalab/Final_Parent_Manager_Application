@@ -215,3 +215,6 @@ label{
   font-weight: bold;
 }
 
+button:disabled {
+  cursor: not-allowed;
+}

@@ -75,11 +75,11 @@
           <input type="text" name="searchUser" placeholder="{{'Search User' | translate}}" [(ngModel)]="searchUser"
             autofocus> &nbsp;&nbsp;&nbsp;
           <label for="Sort"><b id="sort">{{'Sort' | translate}}:</b></label>
-          <button type="button" class="btn btn-primary mx-2" (click)=onClickSortUser($event)
+          <button type="button" class="btn btn-primary mx-2" (click)=onClickSortUserFirstName()
             id="firstNames">{{'First Name' | translate}}</button>
-          <button type="button" class="btn btn-primary mx-2" (click)=onClickSortUser($event)
+          <button type="button" class="btn btn-primary mx-2" (click)=onClickSortUserLastName()
             id="lastNames">{{'Last Name' | translate}}</button>
-          <button type="button" class="btn btn-primary mx-2" (click)=onClickSortUser($event)
+          <button type="button" class="btn btn-primary mx-2" (click)=onClickSortUserEmployeeID()
             id="employeeIDs">{{'Employee ID' | translate}}</button>
           <br /><br />
           <div>

@@ -79,4 +79,10 @@ export class ViewtaskComponent implements OnInit {
     var value = idAttr.nodeValue;
     this.allTaskList = _.sortBy(this.allTaskList, value.substring(0, value.length - 1));
   }
+
+  onClickSortTaskPriority() {
+   this.allTaskList = this.allTaskList.sort(function(a, b) { 
+     return a.priority- b.priority;
+     })
+  }
 }

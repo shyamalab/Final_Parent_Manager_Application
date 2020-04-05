@@ -89,3 +89,6 @@ color : maroon;
   font-weight: 1000;
   color:sienna;
 }
+button:disabled {
+  cursor: not-allowed;
+}

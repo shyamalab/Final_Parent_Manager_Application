@@ -96,3 +96,7 @@
     font-weight: normal;
     background-color: red;
   }
+  button:disabled {
+    cursor: not-allowed;
+  }
+  

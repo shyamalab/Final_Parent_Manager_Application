@@ -112,6 +112,11 @@ export class TaskprojectComponent implements OnInit {
     var value = idAttr.nodeValue;
     this.allProjectList = _.sortBy(this.allProjectList, value.substring(0, value.length - 1));
   }
+  onClickSortProjectPriority() {
+    this.allProjectList = this.allProjectList.sort(function(a, b) { 
+      return a.priority- b.priority;
+      })
+  }
 
   addproject(data) {
     if (this.isEdit) {

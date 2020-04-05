@@ -142,3 +142,6 @@ tr[_ngcontent-vaa-c108] td[_ngcontent-vaa-c108]:first-child {
   background-color:lightseagreen;
   border-radius: 50%;
 }
+button:disabled {
+  cursor: not-allowed;
+}

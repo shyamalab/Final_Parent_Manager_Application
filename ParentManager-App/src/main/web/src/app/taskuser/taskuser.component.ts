@@ -63,13 +63,19 @@ export class TaskuserComponent implements OnInit {
     });
   }
 
-  onClickSortUser(event) {
-    this.loadUserslist();
-    var target = event.target || event.srcElement || event.currentTarget;
-    var idAttr = target.attributes.id;
-    var value = idAttr.nodeValue;
-    this.allUserList = _.sortBy(this.allUserList, value.substring(0, value.length - 1));
+  onClickSortUserFirstName() {
+    this.allUserList = _.sortBy(this.allUserList, function (i) { return i.firstName.toLowerCase(); });
   }
+
+  onClickSortUserLastName() {
+     this.allUserList = _.sortBy(this.allUserList, function (i) { return i.lastName.toLowerCase(); });
+   }
+
+   onClickSortUserEmployeeID() {
+    this.allUserList = this.allUserList.sort(function(a, b) { 
+      return a.employeeID- b.employeeID;
+      })
+   }
 
   adduser(data) {
     if (this.isEdit) {
@@ -156,7 +162,6 @@ export class TaskuserComponent implements OnInit {
     this.resetButton();
     this.isEdit = false;
   }
-
   deleteUser(user: any) {
     this.screenLoader = true;
     this.backendService.deleteUser(user.user_ID).subscribe(
